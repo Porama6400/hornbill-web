@@ -51,3 +51,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=user/app:latest
           cache-to: type=inline
+          build-args: |
+            VITE_PATH_AUTH_LOGIN=${{ vars.VITE_PATH_AUTH_LOGIN }}
+            VITE_PATH_API=${{ vars.VITE_PATH_API }}
