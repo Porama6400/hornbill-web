@@ -8,14 +8,22 @@ export function PageDashboard() {
     const [list, setList] = useState<DaemonUserEntry[]>([])
     const [userInfo, setUserInfo] = useState<UserInfo | undefined>(undefined)
     const apiPath = import.meta.env.VITE_PATH_API
+    const pathAuthLogin = import.meta.env.VITE_PATH_AUTH_LOGIN
 
     function update() {
         console.log("Updating server list")
 
-        fetch(apiPath + "/userinfo", {credentials: "include"}).then(v => v.json()).then((result) => {
+        fetch(apiPath + "/userinfo", {credentials: "include"}).then(v => {
+            if (!v.ok) {
+                throw new Error("Not authenticated")
+            }
+            return v.json()
+        }).then((result) => {
             console.log("userinfo", result)
             setUserInfo(result)
 
+        }).catch(() => {
+            window.location.href = pathAuthLogin
         })
         fetch(apiPath + "/list", {credentials: "include"}).then(v => v.json()).then((result) => {
             console.log("Updated server list")
@@ -42,7 +50,7 @@ export function PageDashboard() {
 
     useEffect(update, [])
     useEffect(() => {
-        if (userInfo === undefined) return
+        if (userInfo === undefined || userInfo.info === undefined) return
         const name = userInfo.info.name;
         setConnected(false)
         outerLoop:
