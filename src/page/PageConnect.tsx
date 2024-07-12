@@ -84,7 +84,7 @@ export function PageConnect() {
             </CardBody>
         </Card>
 
-        <a href={"/dashboard"}>
+        <a href={"/"}>
             <Button colorScheme={"red"} className={"w-24 mt-4"}>Back</Button>
         </a>
     </div>
