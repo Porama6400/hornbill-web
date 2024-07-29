@@ -10,6 +10,6 @@ COPY . .
 RUN pnpm build
 
 FROM nginx:1.27-alpine
-RUN apk update --no-cache && apk upgrade openssl libssl3 libcrypto3
+RUN apk update --no-cache && apk upgrade openssl libssl3 libcrypto3 curl libcurl
 COPY --from=builder /app/dist/ /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
